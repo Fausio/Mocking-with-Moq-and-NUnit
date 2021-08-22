@@ -71,7 +71,7 @@ namespace Loans.Domain.Applications
             _creditScorer.CalculateScore(application.GetApplicantName(),
                                          application.GetApplicantAddress());
 
-            if (_creditScorer.Score < MinimumCreditScore)
+            if (_creditScorer.ScoreResult.ScoreValue.Score < MinimumCreditScore)
             {
                 application.Decline();
                 return;
