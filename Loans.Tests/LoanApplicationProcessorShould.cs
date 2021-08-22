@@ -7,6 +7,12 @@ namespace Loans.Tests
 {
     public class LoanApplicationProcessorShould
     {
+
+        delegate void ValidateCallBack(string applicantName,
+                                     int applicantAge,
+                                     string applicantAddress,
+                                     ref IdentityVerificationStatus status);
+
         [Test]
         public void DeclineLowSalary()
         {
@@ -90,7 +96,7 @@ namespace Loans.Tests
             mockCreditScorer.SetupAllProperties();
             mockCreditScorer.Setup(x => x.ScoreResult.ScoreValue.Score).Returns(300);
             //mockCreditScorer.SetupProperty(x => x.count);
-            
+
 
             var sut = new LoanApplicationProcessor(mockIdentityVerifier.Object,
                                                    mockCreditScorer.Object);
@@ -101,9 +107,42 @@ namespace Loans.Tests
             Assert.That(mockCreditScorer.Object.count, Is.EqualTo(1));
         }
 
-        delegate void ValidateCallBack(string applicantName,
-                                          int applicantAge,
-                                          string applicantAddress,
-                                          ref IdentityVerificationStatus status);
+
+
+
+
+        [Test]
+        public void identityVerifier()
+        {
+            LoanProduct product = new LoanProduct(99, "Loan", 5.25m);
+            LoanAmount amount = new LoanAmount("USD", 200_000);
+            var application = new LoanApplication(42,
+                                                  product,
+                                                  amount,
+                                                  "Sarah",
+                                                  25,
+                                                  "133 Pluralsight Drive, Draper, Utah",
+                                                  65_000);
+
+            var mockIdentityVerifier = new Mock<IIdentityVerifier>();
+
+            mockIdentityVerifier.Setup(x => x.Validate("Sarah",
+                                                        25,
+                                                        "133 Pluralsight Drive, Draper, Utah"))
+                                .Returns(true);
+
+            var mockCreditScorer = new Mock<ICreditScorer>();
+            mockCreditScorer.Setup(x => x.ScoreResult.ScoreValue.Score).Returns(300);
+
+
+            var sut = new LoanApplicationProcessor(mockIdentityVerifier.Object,
+                                                   mockCreditScorer.Object);
+
+            sut.Process(application);
+            mockIdentityVerifier.Verify(x => x.Initialize());
+        }
+
+
     }
 }
+
