@@ -87,8 +87,10 @@ namespace Loans.Tests
 
 
             var mockCreditScorer = new Mock<ICreditScorer>();
+            mockCreditScorer.SetupAllProperties();
             mockCreditScorer.Setup(x => x.ScoreResult.ScoreValue.Score).Returns(300);
-            mockCreditScorer.SetupProperty(x => x.count);
+            //mockCreditScorer.SetupProperty(x => x.count);
+            
 
             var sut = new LoanApplicationProcessor(mockIdentityVerifier.Object,
                                                    mockCreditScorer.Object);
