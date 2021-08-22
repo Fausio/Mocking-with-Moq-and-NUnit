@@ -46,11 +46,11 @@ namespace Loans.Tests
 
             var mockIdentityVerifier = new Mock<IIdentityVerifier>();
 
-            //mockIdentityVerifier.Setup(x => x.Validate("Sarah",
-            //                                            25,
-            //                                            "133 Pluralsight Drive, Draper, Utah"))
-            //                    .Returns(true);
-
+            mockIdentityVerifier.Setup(x => x.Validate("Sarah",
+                                                        25,
+                                                        "133 Pluralsight Drive, Draper, Utah"))
+                                .Returns(true);
+            #region MyRegion
             //bool IsvalidOutValue = true;
             //mockIdentityVerifier.Setup(x => x.Validate("Sarah",
             //                                            25,
@@ -72,17 +72,21 @@ namespace Loans.Tests
             //                                            out IsvalidOutValue));
 
 
-            mockIdentityVerifier.Setup(x => x.Validate("Sarah",
-                                                        25,
-                                                        "133 Pluralsight Drive, Draper, Utah",
-                                                        ref It.Ref<IdentityVerificationStatus>.IsAny))
-                                .Callback(new ValidateCallBack((string applicantName,
-                                                               int applicantAge,
-                                                               string applicantAddress,
-                                                               ref IdentityVerificationStatus status) =>
-                                                                status = new IdentityVerificationStatus(true)));
+            //mockIdentityVerifier.Setup(x => x.Validate("Sarah",
+            //                                            25,
+            //                                            "133 Pluralsight Drive, Draper, Utah",
+            //                                            ref It.Ref<IdentityVerificationStatus>.IsAny))
+            //                    .Callback(new ValidateCallBack((string applicantName,
+            //                                                   int applicantAge,
+            //                                                   string applicantAddress,
+            //                                                   ref IdentityVerificationStatus status) =>
+            //                                                    status = new IdentityVerificationStatus(true)));
+
+            #endregion
+
 
             var mockCreditScorer = new Mock<ICreditScorer>();
+            mockCreditScorer.Setup(x => x.Score).Returns(300);
 
             var sut = new LoanApplicationProcessor(mockIdentityVerifier.Object,
                                                    mockCreditScorer.Object);
