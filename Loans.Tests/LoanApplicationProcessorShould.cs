@@ -51,6 +51,11 @@ namespace Loans.Tests
                                                         "133 Pluralsight Drive, Draper, Utah"))
                                 .Returns(true);
 
+            //mockIdentityVerifier.Setup(x => x.Validate(It.IsAny<string>(),
+            //                                           It.IsAny<int>(),
+            //                                           It.IsAny<string>()))
+            //.Returns(true);
+
             var mockCreditScorer = new Mock<ICreditScorer>();
 
             var sut = new LoanApplicationProcessor(mockIdentityVerifier.Object,
