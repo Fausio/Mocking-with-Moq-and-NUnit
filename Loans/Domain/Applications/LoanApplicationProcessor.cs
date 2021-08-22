@@ -70,7 +70,7 @@ namespace Loans.Domain.Applications
 
             _creditScorer.CalculateScore(application.GetApplicantName(),
                                          application.GetApplicantAddress());
-
+            _creditScorer.count++;
             if (_creditScorer.ScoreResult.ScoreValue.Score < MinimumCreditScore)
             {
                 application.Decline();

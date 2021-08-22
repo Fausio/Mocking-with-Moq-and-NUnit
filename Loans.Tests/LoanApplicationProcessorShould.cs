@@ -29,6 +29,7 @@ namespace Loans.Tests
             sut.Process(application);
 
             Assert.That(application.GetIsAccepted(), Is.False);
+            Assert.That(application.GetIsAccepted(), Is.False);
         }
 
         [Test]
@@ -87,7 +88,7 @@ namespace Loans.Tests
 
             var mockCreditScorer = new Mock<ICreditScorer>();
             mockCreditScorer.Setup(x => x.ScoreResult.ScoreValue.Score).Returns(300);
-
+            mockCreditScorer.SetupProperty(x => x.count);
 
             var sut = new LoanApplicationProcessor(mockIdentityVerifier.Object,
                                                    mockCreditScorer.Object);
@@ -95,6 +96,7 @@ namespace Loans.Tests
             sut.Process(application);
 
             Assert.That(application.GetIsAccepted(), Is.True);
+            Assert.That(mockCreditScorer.Object.count, Is.EqualTo(1));
         }
 
         delegate void ValidateCallBack(string applicantName,
