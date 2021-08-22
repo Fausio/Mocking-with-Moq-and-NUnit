@@ -18,16 +18,9 @@ namespace Loans.Tests
                                                   "Sarah",
                                                   25,
                                                   "133 Pluralsight Drive, Draper, Utah",
-                                                  65_000);
+                                                  64_999);
 
             var mockIdentityVerifier = new Mock<IIdentityVerifier>();
-
-            mockIdentityVerifier.Setup(x => x.Validate("Sarah",
-                                                         25,
-                                                        "133 Pluralsight Drive, Draper, Utah"))
-                                 .Returns(true);
-
-
             var mockCreditScorer = new Mock<ICreditScorer>();
 
             var sut = new LoanApplicationProcessor(mockIdentityVerifier.Object,
@@ -52,6 +45,12 @@ namespace Loans.Tests
                                                   65_000);
 
             var mockIdentityVerifier = new Mock<IIdentityVerifier>();
+
+            mockIdentityVerifier.Setup(x => x.Validate("Sarah",
+                                                        25,
+                                                        "133 Pluralsight Drive, Draper, Utah"))
+                                .Returns(true);
+
             var mockCreditScorer = new Mock<ICreditScorer>();
 
             var sut = new LoanApplicationProcessor(mockIdentityVerifier.Object,
